@@ -14,7 +14,10 @@ const FLOOR = {
 const CONFIG = {
     displayDirectionsIndicator: false,
     camera: {
-        autoRotate: true
+        autoRotate: false
+    },
+    rendererProps: {
+        antialias: true
     },
     colors: {
         baseColor: {
@@ -33,19 +36,26 @@ const CONFIG = {
     }
 };
 
+CONFIG.colors.ratio = {
+    r: (CONFIG.colors.topColor.r - CONFIG.colors.baseColor.r),
+    g: (CONFIG.colors.topColor.g - CONFIG.colors.baseColor.g),
+    b: (CONFIG.colors.topColor.b - CONFIG.colors.baseColor.b)
+};
+
 let renderer, camera, scene, controls;
-let floor;
+let floor = [];
+let floor2 = [];
 
 function init() {
 	function initWebGL() {
-		renderer = new THREE.WebGLRenderer();
+		renderer = new THREE.WebGLRenderer({ antialias: CONFIG.rendererProps });
 		camera = new THREE.PerspectiveCamera(SCENE.FRUSTUM,
 											 SCENE.WIDTH / SCENE.HEIGHT,
 											 SCENE.NEAR,
 											 SCENE.FAR);
 		scene = new THREE.Scene();
 
-		camera.position.set(15, 8, 15);             // TODO: define those as props
+		camera.position.set(0, 18, 0);             // TODO: define those as props
 		camera.lookAt(new THREE.Vector3(0, 0, 0));
 
         controls = new THREE.OrbitControls(camera);
@@ -92,22 +102,39 @@ function init() {
 	}
 
 	function initFloor() {
-		const geometry = new THREE.Geometry();	// TODO change to buffere geometry
-		const material = new THREE.PointsMaterial({
-			size: 2,
-			sizeAttenuation: false,
-            vertexColors: THREE.VertexColors
-		});
+        for (let x = 0; x < FLOOR.SIZE; x++) {
+            const geometry = new THREE.Geometry();	// TODO change to buffere geometry
+            const material = new THREE.LineBasicMaterial({
+                size: 3,
+                sizeAttenuation: false,
+                vertexColors: THREE.VertexColors
+            });
 
-        for (let x = -FLOOR.SIZE / 2; x < FLOOR.SIZE / 2; x++) {
-            for (let z = -FLOOR.SIZE / 2; z < FLOOR.SIZE / 2; z++) {
-                geometry.vertices.push(new THREE.Vector3(x, 0, z));
+            for (let z = 0; z < FLOOR.SIZE; z++) {
+                geometry.vertices.push(new THREE.Vector3(x - FLOOR.SIZE / 2, 0, z - FLOOR.SIZE / 2));
                 geometry.colors.push(new THREE.Color(0x000000));
             }
+
+            floor.push(new THREE.Line(geometry, material))
+		    scene.add(floor[x]);
         }
 
-        floor = new THREE.Points(geometry, material);
-		scene.add(floor);
+        for (let x = 0; x < FLOOR.SIZE; x++) {
+            const geometry = new THREE.Geometry();	// TODO change to buffere geometry
+            const material = new THREE.LineBasicMaterial({
+                size: 3,
+                sizeAttenuation: false,
+                vertexColors: THREE.VertexColors
+            });
+
+            for (let z = 0; z < FLOOR.SIZE; z++) {
+                geometry.vertices.push(floor[z].geometry.vertices[x]);
+                geometry.colors.push(new THREE.Color(0xffffff));
+            }
+
+            floor2.push(new THREE.Line(geometry, material))
+            scene.add(floor2[x]);
+        }
     }
 
 
@@ -153,13 +180,6 @@ function getIncrementValue(currentY, targetY) {
 function getColor(height) {
     const heightRatio = height / CONFIG.map.maxHeight;
 
-    // TODO: move this outside so it's not calculated per vertex
-    const ratio = {
-        r: (CONFIG.colors.topColor.r - CONFIG.colors.baseColor.r),
-        g: (CONFIG.colors.topColor.g - CONFIG.colors.baseColor.g),
-        b: (CONFIG.colors.topColor.b - CONFIG.colors.baseColor.b)
-    };
-
     if (heightRatio >= 1) {
         return CONFIG.colors.topColor;
     }
@@ -169,30 +189,43 @@ function getColor(height) {
     }
 
     return {
-        r: CONFIG.colors.baseColor.r + (heightRatio * ratio.r),
-        g: CONFIG.colors.baseColor.g + (heightRatio * ratio.g),
-        b: CONFIG.colors.baseColor.b + (heightRatio * ratio.b)
+        r: CONFIG.colors.baseColor.r + (heightRatio * CONFIG.colors.ratio.r),
+        g: CONFIG.colors.baseColor.g + (heightRatio * CONFIG.colors.ratio.g),
+        b: CONFIG.colors.baseColor.b + (heightRatio * CONFIG.colors.ratio.b)
     };
 }
 
 function animate() {
     // Animate floor:
 	for (let x = 0; x < FLOOR.SIZE; x++) {
+	    const currentLine = floor[x];
 	    for (let z = 0; z < FLOOR.SIZE; z++) {
-	        const i = x * FLOOR.SIZE + z;
-	        const currentPoint = floor.geometry.vertices[i];
+	        const i = z * FLOOR.SIZE + x;
+	        const currentPoint = currentLine.geometry.vertices[z];
 
 	        if (currentPoint.y < HEIGHT_MAP[i]) {   // TODO: move to getIncrementValue ?
                 currentPoint.y += getIncrementValue(currentPoint.y, HEIGHT_MAP[i]);
             }
 
-            floor.geometry.colors[i] = getColor(currentPoint.y);
-
+            currentLine.geometry.colors[z] = getColor(currentPoint.y);
         }
+
+        currentLine.geometry.verticesNeedUpdate = true;
+        currentLine.geometry.colorsNeedUpdate = true;
     }
 
-    floor.geometry.verticesNeedUpdate = true;
-    floor.geometry.colorsNeedUpdate = true;
+    for (let x = 0; x < FLOOR.SIZE; x++) {
+        const currentLine = floor2[x];
+
+        for (let z = 0; z < FLOOR.SIZE; z++) {
+            const currentPoint = currentLine.geometry.vertices[z];
+
+            currentLine.geometry.colors[z] = getColor(currentPoint.y);
+        }
+
+        currentLine.geometry.verticesNeedUpdate = true;
+        currentLine.geometry.colorsNeedUpdate = true;
+    }
 
     controls.update();
 	requestAnimationFrame(animate);
