@@ -1,18 +1,19 @@
 :root {
   --color-background-main: #bbb;
   --color-background-page: #fff;
-  --padding-page-vertical: 20px;
+  --padding-page-vertical: 50px;
   --padding-page-horizontal: 40px;
 }
 
 @font-face {
-  font-family: "Lemon Milk";
-  src: url("/lemonmilk-webfont.c8055914.woff2") format("woff2"), url("/lemonmilk-webfont.8dc8bac6.woff") format("woff");
+  font-family: "Aleo Free Font";
+  src: url("/aleo-regular-webfont.07eea871.woff2") format("woff2"), url("/aleo-regular-webfont.f5a38e6d.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 body {
-  font-family: "Lemon Milk";
+  font-family: "Aleo Free Font";
+  font-size: 20px;
   background-color: var(--color-background-main);
 }
 
@@ -39,7 +40,22 @@ body {
   margin: 50px auto;
   animation: 500ms ease-out pop-in;
 }
+.page header h1 {
+  margin-top: 0;
+}
 
+:root {
+  --color-background-main: #bbb;
+  --color-background-page: #fff;
+  --padding-page-vertical: 50px;
+  --padding-page-horizontal: 40px;
+}
+
+#language-select {
+  position: absolute;
+  top: var(--padding-page-vertical);
+  right: var(--padding-page-horizontal);
+}
 #language-select .language-icon {
   width: 25px;
   height: 25px;
@@ -53,6 +69,16 @@ body {
 }
 #language-select .language-icon.active {
   opacity: 1;
+}
+
+.placeholder {
+  margin-top: 200px;
+  width: 100%;
+  text-align: center;
+}
+.placeholder .placeholder-icon {
+  width: 200px;
+  height: 200px;
 }
 
 /*# sourceMappingURL=/src.80ee2152.css.map */

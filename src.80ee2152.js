@@ -189,7 +189,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./../assets/lemonmilk-webfont.woff2":[["lemonmilk-webfont.c8055914.woff2","../assets/lemonmilk-webfont.woff2"],"../assets/lemonmilk-webfont.woff2"],"./../assets/lemonmilk-webfont.woff":[["lemonmilk-webfont.8dc8bac6.woff","../assets/lemonmilk-webfont.woff"],"../assets/lemonmilk-webfont.woff"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./../assets/fonts/aleo-regular-webfont.woff2":[["aleo-regular-webfont.07eea871.woff2","../assets/fonts/aleo-regular-webfont.woff2"],"../assets/fonts/aleo-regular-webfont.woff2"],"./../assets/fonts/aleo-regular-webfont.woff":[["aleo-regular-webfont.f5a38e6d.woff","../assets/fonts/aleo-regular-webfont.woff"],"../assets/fonts/aleo-regular-webfont.woff"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -217,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45642" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35554" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -119,15 +119,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"../assets/i18n/en.json":[function(require,module,exports) {
 module.exports = {
-  "header-summary": "This is an English translation"
+  "header-summary": "Javascript engineer, focused on front-end, aspiring full stack. Over 6 years of commercial experience in diverse enviroments and projects."
 };
 },{}],"../assets/i18n/pl.json":[function(require,module,exports) {
 module.exports = {
-  "header-summary": "To jest polskie tłumaczenie"
+  "header-summary": "Programista Javascript, skupiony głównie na front-endzie, aspirujący full stack. Ponad 6 lat doświadczenia, zarówno w software house'ach jak i firmach skupionych na pojedynczym produkcie."
 };
 },{}],"../assets/i18n/jp.json":[function(require,module,exports) {
 module.exports = {
-  "header-summary": "これは日本語に翻訳しているものでございます。"
+  "header-summary": "ＪＡＶＡＳＣＲＩＰＴの開発者。いろいろな会社とプロジェクトで６年以上の経験。"
 };
 },{}],"index.js":[function(require,module,exports) {
 (function () {
@@ -240,7 +240,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45642" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35554" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
